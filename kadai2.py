@@ -21,17 +21,42 @@ def register_user(name, age):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
-    sql = f"INSERT INTO users (name, age) VALUES ('{name}', {age})"
-    cur.execute(sql)
+    sql = f"INSERT INTO users (name, age) VALUES (%(name)s, %(age)s)"
+    cur.execute(sql, {'name': name, 'age': age})
     conn.commit()
     conn.close
 
 
+def all_users():
+    dsn = os.environ.get('DATABASE_URL')
+    conn = psycopg2.connect(dsn)
+    cur = conn.cursor()
+    sql = "SELECT * FROM users;"
+    cur.execute(sql)
+    users = cur.fetchall()
+    conn.commit()
+    conn.close
+    return users
+
+
 def main():
-    # init_db()
-    name = 'Bob'
-    age = 15
-    register_user(name, age)
+    init_db()
+    users = all_users()
+    while True:
+        command = input('Your command > ')
+        if command == 'S':
+            for users in all_users():
+                print(f"Name: {users[0]} Age: {users[1]}")
+        elif command == 'A':
+            name = input('New user name > ')
+            age = input('New user age > ')
+            register_user(name, age)
+            print(f"Add new user: {name}")
+        elif command == 'Q':
+            print(f"Bye!")
+            break
+        else:
+            print(f"x: command not found")
 
 
 if __name__ == '__main__':
