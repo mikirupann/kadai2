@@ -37,7 +37,8 @@ def all_users():
     conn.commit()
     conn.close
     return users
-"""
+
+
 def ken_saku():
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
@@ -48,7 +49,6 @@ def ken_saku():
     conn.commit()
     conn.close
     print(users)
-"""
 
 def main():
     init_db()
