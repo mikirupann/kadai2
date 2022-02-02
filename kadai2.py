@@ -10,7 +10,7 @@ def init_db():
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
-    with open('schema.sql', encoding="utf-8") as f:
+    with open('sql/schema.sql', encoding="utf-8") as f:
         sql = f.read()
         cur.execute(sql)
     conn.commit()
@@ -36,14 +36,14 @@ def all_users():
     users = cur.fetchall()
     conn.commit()
     conn.close
-    return users
+    return (users)
 
 
 def ken_saku(name):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
-    with open('kensaku.sql', encoding="utf-8") as f:
+    with open('sql/kensaku.sql', encoding="utf-8") as f:
         sql = f.read()
         cur.execute(sql, {'name': name})
     users = cur.fetchall()
@@ -56,7 +56,7 @@ def de_lete(name):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
-    with open('delete.sql', encoding="utf-8") as f:
+    with open('sql/delete.sql', encoding="utf-8") as f:
         sql = f.read()
         cur.execute(sql, {'name': name})
     conn.commit()
@@ -67,7 +67,7 @@ def kai(name, name_kai, age_kai):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
-    with open('kai.sql', encoding="utf-8") as f:
+    with open('sql/kai.sql', encoding="utf-8") as f:
         sql = f.read()
         cur.execute(sql, {'name': name, 'name_kai': name_kai, 'age_kai': age_kai})
     conn.commit()
@@ -78,7 +78,7 @@ def main():
     init_db()
     # users = all_users()
     while True:
-        command = input('Your command > ')
+        command = input('Your command > ').upper()
         if command == 'S':
             all = all_users()
             for i in all:
