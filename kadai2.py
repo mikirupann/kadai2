@@ -39,25 +39,50 @@ def all_users():
     return users
 
 
-def ken_saku():
+def ken_saku(name):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
-    sql = "SELECT * FROM users WHERE age;"
-    cur.execute(sql)
+    with open('kensaku.sql', encoding="utf-8") as f:
+        sql = f.read()
+        cur.execute(sql, {'name': name})
     users = cur.fetchall()
     conn.commit()
     conn.close
-    print(users)
+    return users
+
+
+def de_lete(name):
+    dsn = os.environ.get('DATABASE_URL')
+    conn = psycopg2.connect(dsn)
+    cur = conn.cursor()
+    with open('delete.sql', encoding="utf-8") as f:
+        sql = f.read()
+        cur.execute(sql, {'name': name})
+    conn.commit()
+    conn.close
+
+
+def kai(name, name_kai, age_kai):
+    dsn = os.environ.get('DATABASE_URL')
+    conn = psycopg2.connect(dsn)
+    cur = conn.cursor()
+    with open('kai.sql', encoding="utf-8") as f:
+        sql = f.read()
+        cur.execute(sql, {'name': name, 'name_kai': name_kai, 'age_kai': age_kai})
+    conn.commit()
+    conn.close
+
 
 def main():
     init_db()
-    users = all_users()
+    # users = all_users()
     while True:
         command = input('Your command > ')
         if command == 'S':
-            for users in all_users():
-                print(f"Name: {users[0]} Age: {users[1]}")
+            all = all_users()
+            for i in all:
+                print(f"Name: {i[0]} Age: {i[1]}")
         elif command == 'A':
             name = input('New user name > ')
             age = input('New user age > ')
@@ -65,7 +90,7 @@ def main():
             try:
                 register_user(name, age)
             except psycopg2.errors.UniqueViolation:
-                print(f"Duplicated user name Bob")
+                print(f"Duplicated user name {name}")
             else:
                 pass
             finally:
@@ -75,7 +100,21 @@ def main():
             break
         elif command == 'F':
             name = input('User name > ')
-            print()
+            ken = ken_saku(name)
+            if len(ken) == 0:
+                print(f"Sorry, {ken[0]} is not found")
+            else:
+                print(f"Name: {ken[0][0]} Age: {ken[0][1]}")
+        elif command == 'D':
+            name = input('User name > ')
+            de_lete(name)
+            print(f"User {name} is deleted")
+        elif command == 'E':
+            name = input('User name > ')
+            name_kai = input(f"New user name({name}) > ")
+            age_kai = input(f"New user age({age}) > ")
+            kai(name, name_kai, age_kai)
+
         else:
             print(f"x: command not found")
 
