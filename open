@@ -2,4 +2,7 @@
 [S]how: Show all users info
 [A]dd: Add new user
 [Q]uit: Quit The Application
+[F]ind: Find users info
+[D]elete: Delete users info
+[E]dit: Edit users info
 ======================================
