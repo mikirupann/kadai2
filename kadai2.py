@@ -69,7 +69,7 @@ def de_lete(name):
 
 
 # 編集
-def kai(name, name_kai, age_kai):
+def kai(name, age, name_kai, age_kai):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
@@ -122,7 +122,8 @@ def main():
             name = input('User name > ')
             name_kai = input(f"New user name({name}) > ")
             age_kai = input(f"New user age({age}) > ")
-            kai(name, name_kai, age_kai)
+            im = kai(name, age, name_kai, age_kai)
+            print(im)
 
         else:
             print(f"x: command not found")
