@@ -102,7 +102,7 @@ def main():
             name = input('User name > ')
             ken = ken_saku(name)
             if len(ken) == 0:
-                print(f"Sorry, {ken[0]} is not found")
+                print(f"Sorry, {name} is not found")
             else:
                 print(f"Name: {ken[0][0]} Age: {ken[0][1]}")
         elif command == 'D':
