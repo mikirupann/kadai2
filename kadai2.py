@@ -75,6 +75,9 @@ def kai(name, name_kai, age_kai):
 
 
 def main():
+    with open('open', encoding="utf-8") as f:
+        sql = f.read()
+        print(sql)
     init_db()
     # users = all_users()
     while True:
