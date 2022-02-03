@@ -29,6 +29,19 @@ def register_user(name, age):
     conn.close
 
 
+# テーブルにある一つのものを抽出
+def one_user(name):
+    dsn = os.environ.get('DATABASE_URL')
+    conn = psycopg2.connect(dsn)
+    cur = conn.cursor()
+    sql = "SELECT * FROM users;"
+    cur.execute(sql)
+    user = cur.fetchone()
+    conn.commit()
+    conn.close
+    return (user)
+
+
 # テーブルにある全てのものを抽出
 def all_users():
     dsn = os.environ.get('DATABASE_URL')
@@ -50,10 +63,8 @@ def ken_saku(name):
     with open('sql/kensaku.sql', encoding="utf-8") as f:
         sql = f.read()
         cur.execute(sql, {'name': name})
-    users = cur.fetchall()
     conn.commit()
     conn.close
-    return users
 
 
 # 削除
@@ -69,7 +80,7 @@ def de_lete(name):
 
 
 # 編集
-def kai(name, age, name_kai, age_kai):
+def kai(name, name_kai, age_kai):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
@@ -81,7 +92,7 @@ def kai(name, age, name_kai, age_kai):
 
 
 def main():
-    with open('open', encoding="utf-8") as f:
+    with open('open.txt', encoding="utf-8") as f:
         sql = f.read()
         print(sql)
     init_db()
@@ -120,11 +131,14 @@ def main():
             print(f"User {name} is deleted")
         elif command == 'E':
             name = input('User name > ')
-            name_kai = input(f"New user name({name}) > ")
-            age_kai = input(f"New user age({age}) > ")
-            im = kai(name, age, name_kai, age_kai)
-            print(im)
-
+            one_user(name)
+            if not one_user(name):
+                print(f"Sorry, {name} is not found")
+            else:
+                name_kai = input(f"New user name({name}) > ")
+                age_kai = input(f"New user age({one_user(name)[1]}) > ")
+                kai(name, name_kai, age_kai)
+                print(f"Update user: {name_kai}")
         else:
             print(f"x: command not found")
 
