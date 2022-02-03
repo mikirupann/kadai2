@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+# テーブルをつくる
 def init_db():
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
@@ -17,6 +18,7 @@ def init_db():
     conn.close
 
 
+# カラム追加
 def register_user(name, age):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
@@ -27,6 +29,7 @@ def register_user(name, age):
     conn.close
 
 
+# テーブルにある全てのものを抽出
 def all_users():
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
@@ -39,6 +42,7 @@ def all_users():
     return (users)
 
 
+# 検索
 def ken_saku(name):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
@@ -52,6 +56,7 @@ def ken_saku(name):
     return users
 
 
+# 削除
 def de_lete(name):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
@@ -63,6 +68,7 @@ def de_lete(name):
     conn.close
 
 
+# 編集
 def kai(name, name_kai, age_kai):
     dsn = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(dsn)
